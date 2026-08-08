@@ -36,8 +36,14 @@ public class ErrorsHandler {
         String msg = ex.getMessage();
         return new ErrorsToSendDTO(msg);
     }
-    
-    
+
+    @ExceptionHandler(PayloadValidationException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorsToSendDTO handlePayloadValidationError(PayloadValidationException ex) {
+        return new ErrorsToSendDTO(ex.getMessage(), ex.getErrors());
+    }
+
+
     /**
      * This is the 404 error.
      */
