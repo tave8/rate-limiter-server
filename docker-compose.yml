@@ -8,8 +8,8 @@
 
 services:
         
-  # Rate Limiter 
-  rate-limiter:
+  # Rate Limiter: Server 
+  rate-limiter-server:
     build: .
     ports:
       - "9100:9100" # Make sure the container port (so the java server) is the same as SERVER_PORT in this file
