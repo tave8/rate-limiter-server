@@ -11,7 +11,7 @@ public class Controller {
     
     @GetMapping
     public String checkServerOk() {
-        return "rate limiter - services simulator - server running";
+        return "rate limiter: services simulator. up and running.";
     }
 
 }
