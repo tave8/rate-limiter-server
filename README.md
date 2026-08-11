@@ -1,12 +1,12 @@
 # Rate Limiter: Server
 
-This is the server component of the Rate Limiter Project; Its only job is to simulate real APIs and services exposed over the network.
+This is the Rate Limiter Server, which is part of my [Rate Limiter Project](https://github.com/tave8/rate-limiter).
+
+Its only job is to simulate real APIs and services exposed over the network.
 
 The proper name would be "services / APIs simulator" but "server" was shorter, so I stuck with that.
 
 So do not mistake this server, which is a "services simulator" with the actual Rate Limiter server.
-
-To know more, see [Rate Limiter repo](https://github.com/tave8/rate-limiter). 
 
 How it works? Very simple. Each endpoint exposes a service.
 

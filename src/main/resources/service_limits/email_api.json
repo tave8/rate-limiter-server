@@ -1,4 +1,4 @@
 {
-  "maxEvents": 5,
+  "maxEvents": 10000,
   "window": 1000
 }

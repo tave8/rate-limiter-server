@@ -28,8 +28,8 @@ public class EmailAPIController {
             @RequestBody @Validated EmailAPIRequestPayload payload,
             BindingResult validation) 
     {
-
-        serviceLimiter.getHistory().add(); // Rate limit
+        
+        serviceLimiter.getLimiter().add(); // Rate limit
         
         PayloadValidationHelper.requireNoErrors(validation);
         

@@ -1,20 +1,22 @@
 package com.giuseppetavella.rate_limiter_server;
 
-import com.giuseppetavella.rate_limiter_server.libs.HistoryQueue;
+
+import com.giuseppetavella.rate_limiter_algo.RateLimiter;
+import com.giuseppetavella.rate_limiter_algo.timeline.TimelineManager;
 
 public class ServiceLimiter {
     private final int maxEvents;
     private final long window;
-    private final HistoryQueue history;
+    private final RateLimiter limiter;
     
     public ServiceLimiter(int maxEvents, long window) {
         this.maxEvents = maxEvents;
         this.window = window;
-        this.history = new HistoryQueue(maxEvents, window);
+        this.limiter = new TimelineManager(maxEvents, window);
     }
 
-    public HistoryQueue getHistory() {
-        return history;
+    public RateLimiter getLimiter() {
+        return limiter;
     }
 
     public int getMaxEvents() {
@@ -28,7 +30,7 @@ public class ServiceLimiter {
     @Override
     public String toString() {
         return "ServiceLimit{" +
-                "history=" + history +
+                "limiter=" + limiter +
                 ", maxEvents=" + maxEvents +
                 ", window=" + window +
                 '}';
