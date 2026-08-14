@@ -1,5 +1,6 @@
 package com.giuseppetavella.rate_limiter_server.services.email_api;
 
+import com.giuseppetavella.rate_limiter_server.JitterUtils;
 import com.giuseppetavella.rate_limiter_server.services.email_api.payloads.EmailAPIRequestPayload;
 import com.giuseppetavella.rate_limiter_server.services.email_api.payloads.EmailAPIResponsePayload;
 import org.springframework.stereotype.Service;
@@ -13,7 +14,7 @@ public class EmailAPIService {
     public CompletableFuture<EmailAPIResponsePayload> processEmailToSend(EmailAPIRequestPayload payload) {
         return CompletableFuture.supplyAsync(() -> {
             try {
-                Thread.sleep(1000);
+                Thread.sleep(1000, JitterUtils.addJitter(1000, .3));
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }

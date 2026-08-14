@@ -32,7 +32,8 @@ public class EmailAPIController {
 
         // Rate limit
         if( !limiter.add() ) {
-            throw new EventRejectedException(limiter);
+            throw new EventRejectedException("Too many requests (Rate Limiter destination server). "
+                                            +"Reason: %s".formatted(limiter.getRejectionReason()));
         }
         
         PayloadValidationHelper.requireNoErrors(validation);
