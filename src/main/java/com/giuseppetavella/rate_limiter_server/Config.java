@@ -1,6 +1,6 @@
 package com.giuseppetavella.rate_limiter_server;
 
-import com.giuseppetavella.rate_limiter_server.services.email_api.EmailAPIServiceLimiter;
+import com.giuseppetavella.rate_limiter_server.services.email_api.EmailAPIRateLimiter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
@@ -20,40 +20,17 @@ public class Config {
     public RestTemplate restTemplate() {
         RestTemplate restTemplate = new RestTemplate();
 
+        // Do not throw when non-ok response
         restTemplate.setErrorHandler(new DefaultResponseErrorHandler() {
             @Override
             public boolean hasError(ClientHttpResponse response) throws IOException {
-                return false; // Tells RestTemplate that NO response is an error
+                return false; 
             }
         });
 
         return restTemplate;
     }
 
-
-    /**
-     * Service limit for Email API.
-     * 
-     * @return
-     * @throws IOException
-     */
-    @Bean
-    public EmailAPIServiceLimiter loadEmailAPIServiceLimit() throws IOException {
-        
-        var objectMapper = new ObjectMapper();
-        
-        // Load service limit
-        ClassPathResource resource = new ClassPathResource("service_limits/email_api.json");
-        EmailAPIServiceLimiter serviceLimit;
-
-        try (InputStream inputStream = resource.getInputStream()) {
-            serviceLimit = objectMapper.readValue(
-                    inputStream,
-                    new TypeReference<EmailAPIServiceLimiter>() {}
-            );
-        }
-
-        return serviceLimit;
-    }
+    
 
 }

@@ -1,7 +1,8 @@
 package com.giuseppetavella.rate_limiter_server.services.email_api;
 
+import com.giuseppetavella.rate_limiter_algo.EventRejectedException;
+import com.giuseppetavella.rate_limiter_algo.RateLimiter;
 import com.giuseppetavella.rate_limiter_server.PayloadValidationHelper;
-import com.giuseppetavella.rate_limiter_server.ServiceLimiter;
 import com.giuseppetavella.rate_limiter_server.services.email_api.payloads.EmailAPIRequestPayload;
 import com.giuseppetavella.rate_limiter_server.services.email_api.payloads.EmailAPIResponsePayload;
 import org.springframework.validation.BindingResult;
@@ -12,14 +13,14 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/email-api")
 public class EmailAPIController {
 
-    private final EmailAPIService emailAPIService;
-    private final ServiceLimiter serviceLimiter; // The limit for this service (Email API)
+    private final EmailAPIService service;
+    private final EmailAPIRateLimiter limiter; 
     
-    public EmailAPIController(EmailAPIService emailAPIService, 
-                              EmailAPIServiceLimiter emailAPIServiceLimiter) // Dependency injected
+    public EmailAPIController(EmailAPIService service, 
+                              EmailAPIRateLimiter limiter)
     {
-        this.emailAPIService = emailAPIService;
-        this.serviceLimiter = emailAPIServiceLimiter;
+        this.service = service;
+        this.limiter = limiter;
     }
     
     
@@ -28,12 +29,15 @@ public class EmailAPIController {
             @RequestBody @Validated EmailAPIRequestPayload payload,
             BindingResult validation) 
     {
-        
-        serviceLimiter.getLimiter().add(); // Rate limit
+
+        // Rate limit
+        if( !limiter.add() ) {
+            throw new EventRejectedException(limiter);
+        }
         
         PayloadValidationHelper.requireNoErrors(validation);
         
-        return emailAPIService.processEmailToSend(payload).join();
+        return service.processEmailToSend(payload).join();
     }
 
 }
